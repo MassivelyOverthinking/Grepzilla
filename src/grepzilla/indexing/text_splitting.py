@@ -1,6 +1,6 @@
-#========================================================================================================================
+# ------------------------------------------------------------------------------------------------------------------------
 # IMPORTS & MODULES
-#========================================================================================================================
+# ------------------------------------------------------------------------------------------------------------------------
 
 from __future__ import annotations
 
@@ -14,9 +14,9 @@ from typing import Any
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_text_splitters.character import Language
 
-#========================================================================================================================
+# ------------------------------------------------------------------------------------------------------------------------
 # INGESTION PIPELINE: Text Splitter
-#========================================================================================================================
+# ------------------------------------------------------------------------------------------------------------------------
 
 # Mapping of file extensions to programming languages for text splitting.
 LANGUAGES_MAPPING: dict[str, str] = {
@@ -94,7 +94,7 @@ class TextChunker:
             raise ValueError("Text parameter cannot be empty or whitespace.")
 
         # Determine the programming language based on the file extension
-        language = self._get_language_from_source(source)
+        language: Language = LANGUAGES_MAPPING.get(Path(source).suffix)
 
         # Create a RecursiveCharacterTextSplitter instance with the specified configuration
         splitter = RecursiveCharacterTextSplitter(
