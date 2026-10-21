@@ -21,6 +21,8 @@ app = typer.Typer(
     no_args_is_help=True,
 )
 
+# Setup Command ==> USe YAML config-file to setup the Grepzilla behaviour.
+# Overwrites existing configuration and orchestration settings.
 @app.command(
     name="setup",
     help="Setup Grepzilla configuration and orchestration using YAML config-file.",
@@ -38,12 +40,22 @@ def setup(
             readable=True,
         )
     ],
+    overwrite: Annotated[
+        bool,
+        typer.Option(
+            "--overwrite",
+            "-o",
+            help="Overwrite existing configuration and orchestration settings.",
+            is_flag=True,
+        )
+    ]
 ):
     """
     Setup Grepzilla configuration and orchestration using YAML config-file.
 
     Args:
         path (Path): Path to the YAML configuration file.
+        overwrite (bool): Whether to overwrite existing configuration and orchestration settings.
     """
 
     pass
@@ -78,10 +90,67 @@ def init(
     name="query",
     help="Semantic query for relevant files and content."
 )
-def query():
+def query(
+    query: Annotated[
+        str,
+        typer.Argument(
+            help="Semantic query for relevant files and content.",
+            min_length=1,
+        )
+    ],
+    number: Annotated[
+        int,
+        typer.Option(
+            "--number",
+            "-n",
+            help="Number of relevant files to return.",
+            min=1,
+            max=100,
+            default=10,
+            show_default=True,
+        )
+    ],
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            "--verbose",
+            "-v",
+            help="Enable verbose output.",
+            is_flag=True,
+        )
+    ]
+):
     """
     Semantic query for relevant files and content.
     """
 
     pass
 
+@app.command(
+    name="root",
+    help="View, add or remove Grepzilla Root file directories."
+)
+def root():
+    pass
+
+@app.command(
+    name="report",
+    help="View the current Grepzilla configuration and orchestration report."
+)
+def report():
+    """
+    View the current Grepzilla configuration and orchestration report.
+    """
+    
+    pass
+
+@app.command(
+    name="history",
+    help="View the history of previous queries and results."
+)
+def history():
+    """
+    View the history of previous queries and results.
+    """
+
+    pass
