@@ -66,9 +66,7 @@ class DocumentLoader:
             ) from exc
 
         if not path.is_relative_to(self.root):
-            raise DocumentLoadError(
-                f"File is outside configured root: {path}"
-            )
+            raise DocumentLoadError(f"File is outside configured root: {path}")
 
         if not path.is_file():
             return []
@@ -81,17 +79,13 @@ class DocumentLoader:
             return []
 
         if path.stat().st_size > self.max_file_size_bytes:
-            raise DocumentLoadError(
-                f"File exceeds size limit: {path}"
-            )
+            raise DocumentLoadError(f"File exceeds size limit: {path}")
 
         extension = path.suffix.lower()
         loader_factory = self._loaders.get(extension)
 
         if loader_factory is None:
-            raise UnsupportedFileTypeError(
-                f"Unsupported file extension: {extension or '<none>'}"
-            )
+            raise UnsupportedFileTypeError(f"Unsupported file extension: {extension}")
 
         # File I/O and parsing may fail transiently; let the indexing
         # worker catch the error and apply its retry policy.
@@ -101,9 +95,7 @@ class DocumentLoader:
         except Exception as exc:
             if isinstance(exc, DocumentLoadError):
                 raise
-            raise DocumentLoadError(
-                f"Failed to load {path}: {exc}"
-            ) from exc
+            raise DocumentLoadError(f"Failed to load {path}: {exc}") from exc
 
         for document in documents:
             document.metadata.update({
@@ -115,7 +107,6 @@ class DocumentLoader:
             })
 
         return documents    
-
 
     @staticmethod
     def _load_csv(path: Path) -> list[Document]:
